@@ -1,75 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Credit Approval Predictor</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    #spinner {
-      display: none;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <title>Credit Card Approval Predictor</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to right, #e3f2fd, #bbdefb);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            width: 350px;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        h1 {
+            text-align: center;
+            color: #0d47a1;
+            margin-bottom: 30px;
+        }
+
+        form label {
+            margin-top: 15px;
+            display: block;
+            font-weight: bold;
+            color: #333;
+        }
+
+        form input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            transition: border-color 0.3s;
+        }
+
+        form input[type="text"]:focus {
+            border-color: #42a5f5;
+            outline: none;
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            padding: 12px;
+            background-color: #1e88e5;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            margin-top: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #1565c0;
+        }
+
+        .result {
+            margin-top: 25px;
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            color: #007BFF;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
 </head>
-<body class="bg-gradient-to-br from-blue-50 to-gray-100 min-h-screen flex items-center justify-center p-4">
-  <div class="w-full max-w-xl bg-white rounded-2xl shadow-xl p-8 space-y-6">
-    <h1 class="text-3xl font-bold text-gray-800 text-center">Credit Approval Predictor</h1>
+<body>
+    <div class="container">
+        <h1>Credit Approval</h1>
+        <form method="POST">
+            <label for="age">Age:</label>
+            <input type="text" name="age" required>
 
-    <form method="POST" class="grid grid-cols-1 gap-6" onsubmit="showSpinner()">
-      <div>
-        <label class="block text-sm font-medium text-gray-700">Age</label>
-        <input type="number" name="age" step="1" required class="mt-1 w-full px-4 py-2 border rounded-lg" />
-        <p class="text-sm text-gray-500 mt-1">Enter the applicant's age in years.</p>
-      </div>
+            <label for="income">Income:</label>
+            <input type="text" name="income" required>
 
-      <div>
-        <label class="block text-sm font-medium text-gray-700">Monthly Income</label>
-        <input type="number" name="income" step="0.01" required class="mt-1 w-full px-4 py-2 border rounded-lg" />
-        <p class="text-sm text-gray-500 mt-1">Applicant's monthly income in USD.</p>
-      </div>
+            <label for="credit_score">Credit Score:</label>
+            <input type="text" name="credit_score" required>
 
-      <div>
-        <label class="block text-sm font-medium text-gray-700">Credit Score</label>
-        <input type="number" name="credit_score" step="1" required class="mt-1 w-full px-4 py-2 border rounded-lg" />
-        <p class="text-sm text-gray-500 mt-1">Between 300 and 850.</p>
-      </div>
+            <label for="loan_amount">Loan Amount:</label>
+            <input type="text" name="loan_amount" required>
 
-      <div>
-        <label class="block text-sm font-medium text-gray-700">Loan Amount</label>
-        <input type="number" name="loan_amount" step="0.01" required class="mt-1 w-full px-4 py-2 border rounded-lg" />
-        <p class="text-sm text-gray-500 mt-1">Total amount of the loan requested.</p>
-      </div>
+            <input type="submit" value="Predict">
+        </form>
 
-      <div>
-        <label class="block text-sm font-medium text-gray-700">Loan Term (months)</label>
-        <input type="number" name="loan_term" step="1" required class="mt-1 w-full px-4 py-2 border rounded-lg" />
-        <p class="text-sm text-gray-500 mt-1">Number of months to repay the loan.</p>
-      </div>
-
-      <button type="submit" class="w-full py-3 bg-blue-600 text-white rounded-lg text-lg font-semibold hover:bg-blue-700 transition">
-        Predict
-      </button>
-
-      <div id="spinner" class="text-center mt-4">
-        <svg class="animate-spin h-6 w-6 mx-auto text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
-        </svg>
-        <p class="text-sm text-gray-600 mt-2">Processing...</p>
-      </div>
-    </form>
-
-   
-      <div class="text-center mt-6 p-4 rounded-lg {{ 'bg-green-100 text-green-800' if prediction == 'Approved' else 'bg-red-100 text-red-800' }}">
-        <strong>Prediction:</strong>
-      </div>
-    
-  </div>
-
-  <script>
-    function showSpinner() {
-      document.getElementById('spinner').style.display = 'block';
-    }
-  </script>
+        {% if prediction %}
+            <div class="result">
+                Prediction: {{ prediction }}
+            </div>
+        {% endif %}
+    </div>
 </body>
 </html>

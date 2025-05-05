@@ -13,10 +13,19 @@ def index():
     prediction = None
     if request.method == 'POST':
         try:
-            features = [float(request.form.get(f'feature{i}')) for i in range(1, 6)]  # Adjust number
-            prediction = model.predict([features])[0]
-            prediction = "Approved" if prediction == 1 else "Not Approved"
-        except:
+            # Get inputs from form
+            age = float(request.form['age'])
+            income = float(request.form['income'])
+            credit_score = float(request.form['credit_score'])
+            loan_amount = float(request.form['loan_amount'])
+
+            # Prepare input array
+            features = [age, income, credit_score, loan_amount]
+
+            # Make prediction
+            pred = model.predict([features])[0]
+            prediction = "Approved" if pred == 1 else "Not Approved"
+        except Exception as e:
             prediction = "Invalid input. Please enter valid numbers."
     return render_template('index.html', prediction=prediction)
 
